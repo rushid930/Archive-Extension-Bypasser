@@ -9,6 +9,20 @@ async function getCurrentTab() {
     return tab;
 }
 
+// checks if website already has an archived version
+async function checkArchive(url) {
+    const api = "https://archive.org/wayback/available?url=" + encodeURIComponent(url);
+    const response = await fetch(api);
+
+    if (!response.ok) {
+        throw new Error("Archive request failed");
+    }
+
+    const data = await response.json();
+
+    return data.archived_snapshots?.closest;
+}
+
 // Function to display current tab information
 async function displayTabInfo() {
     const tab = await getCurrentTab();
