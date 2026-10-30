@@ -6,6 +6,10 @@ async function getCurrentTab() {
         lastFocusedWindow: true // only focuses on the last window used in case multiple windows are open
     });
 
+    if (!tab || !tab.url || !/^https?:/i.test(tab.url)) {
+        throw new Error("Open a regular webpage (HTTP or HTTPS) first.");
+    }
+
     return tab;
 }
 
