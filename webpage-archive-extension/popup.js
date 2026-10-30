@@ -64,6 +64,54 @@ function setStatus(message) {
     }
 })();
 
+// BUTTON 1: Save a snapshot
+document.getElementById("save").addEventListener(
+    "click",
+    () => {
+        if (!currentUrl.url) return;
+
+        const target = "https://web.archive.org/save/" + currentUrl.url;
+
+        chrome.tabs.create({
+            url: target
+        });
+
+        setStatus("Opened the Internet Archive save page.");
+    }
+);
+
+// BUTTON 2: View existing snapshots
+document.getElementById("view").addEventListener(
+    "click",
+    () => {
+        if (!currentUrl.url) return;
+
+        const target =  "https://web.archive.org/web/*/" + currentUrl.url;
+
+        chrome.tabs.create({
+            url: target
+        });
+
+        setStatus("Opened the available snapshot history.");
+    }
+);
+
+// BUTTON 3: Copy page URL
+document.getElementById("copy").addEventListener(
+    "click",
+    async () => {
+        if (!currentUrl.url) return;
+        
+        try{
+            await navigator.clipboard.writeText(currentUrl.url);
+            setStatus("Page URL copied.");
+        }
+        catch{
+            setStatus("Could not copy the URL from this page.");
+        }
+    }
+);
+
 // async function testArchive() {
 //     const tab = await getCurrentTab();
 //     if (!tab) return;
