@@ -9,11 +9,5 @@
     "action": {
         "default_title": "Archive this page",
         "default_popup": "popup.html"
-    },
-    "host_permissions": [
-        "https://archive.org/*"
-    ],
-    "background": {
-        "service_worker": "popup.js"
     }
 }
