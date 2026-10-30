@@ -74,11 +74,7 @@ document.getElementById("save").addEventListener(
     () => {
         if (!currentUrl.url) return;
 
-        const target = "https://web.archive.org/save/" + currentUrl.url;
-
-        chrome.tabs.create({
-            url: target
-        });
+        savePage(currentUrl.url);
 
         setStatus("Opened the Internet Archive save page.");
     }
@@ -90,11 +86,7 @@ document.getElementById("view").addEventListener(
     () => {
         if (!currentUrl.url) return;
 
-        const target =  "https://web.archive.org/web/*/" + currentUrl.url;
-
-        chrome.tabs.create({
-            url: target
-        });
+        openArchivedPage(currentUrl.url)
 
         setStatus("Opened the available snapshot history.");
     }
