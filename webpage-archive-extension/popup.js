@@ -13,7 +13,6 @@ async function getCurrentTab() {
     return tab;
 }
 
-// Checks if website already has an archived version
 async function checkArchive(url) {
     const api = "https://archive.org/wayback/available?url=" + encodeURIComponent(url);
     const response = await fetch(api);
