@@ -23,36 +23,61 @@ async function checkArchive(url) {
     return data.archived_snapshots?.closest;
 }
 
-async function testArchive() {
-    const tab = await getCurrentTab();
-    if (!tab) return;
+async function openArchivedPage(url) {
 
-    const url = tab.url;
+    const snapshot = await checkArchive(url);
 
-    try {
+    if (snapshot && snapshot.available) {
 
-        const archive = await checkArchive(url);
+        chrome.tabs.create({
+            url: snapshot.url
+        });
 
-        console.log("Original URL:", url);
-        console.log("Archive Result:", archive);
+    } else {
 
-        if (archive) {
-            console.log("Archived URL:", archive.url);
-            console.log("Timestamp:", archive.timestamp);
-            console.log("Available:", archive.available);
-        } else {
-            console.log("No archived version found.");
-        }
-
-    } catch (error) {
-
-        console.error("Error:", error);
+        console.log("No archived version found.");
 
     }
 }
 
-// Run the test
-testArchive();
+function savePage(url) {
+
+    const saveURL =
+        "https://web.archive.org/save/" + url;
+
+    chrome.tabs.create({
+        url: saveURL
+    });
+
+}
+
+// async function testArchive() {
+//     const tab = await getCurrentTab();
+//     if (!tab) return;
+
+//     const url = tab.url;
+
+//     try {
+
+//         const archive = await checkArchive(url);
+
+//         console.log("Original URL:", url);
+//         console.log("Archive Result:", archive);
+
+//         if (archive) {
+//             console.log("Archived URL:", archive.url);
+//             console.log("Timestamp:", archive.timestamp);
+//             console.log("Available:", archive.available);
+//         } else {
+//             console.log("No archived version found.");
+//         }
+
+//     } catch (error) {
+
+//         console.error("Error:", error);
+
+//     }
+// }
 
 // Function to display current tab information
 // async function displayTabInfo() {
@@ -66,17 +91,17 @@ testArchive();
 //     console.log("Tab Title:", tab.title);
 // }
 
-// Detect when switching tabs
-chrome.tabs.onActivated.addListener(() => {
-    //displayTabInfo();
-    testArchive();
-});
+// // Detect when switching tabs
+// chrome.tabs.onActivated.addListener(() => {
+//     displayTabInfo();
+//     testArchive();
+// });
 
-// Detect when navigating or updating a webpage
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    // Only execute when the webpage has finished loading
-    if (changeInfo.status === "complete" && tab.active) {
-        //displayTabInfo();
-        testArchive();
-    }
-});
+// // Detect when navigating or updating a webpage
+// chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+//     // Only execute when the webpage has finished loading
+//     if (changeInfo.status === "complete" && tab.active) {
+//         displayTabInfo();
+//         testArchive();
+//     }
+// });
