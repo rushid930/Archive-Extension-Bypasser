@@ -24,8 +24,10 @@ async function checkArchive(url) {
 }
 
 async function testArchive() {
+    const tab = await getCurrentTab();
+    if (!tab) return;
 
-    const url = "https://www.nytimes.com/";
+    const url = tab.url;
 
     try {
 
@@ -52,7 +54,7 @@ async function testArchive() {
 // Run the test
 testArchive();
 
-// // Function to display current tab information
+// Function to display current tab information
 // async function displayTabInfo() {
 //     const tab = await getCurrentTab();
 
@@ -64,15 +66,17 @@ testArchive();
 //     console.log("Tab Title:", tab.title);
 // }
 
-// // Detect when switching tabs
-// chrome.tabs.onActivated.addListener(() => {
-//     displayTabInfo();
-// });
+// Detect when switching tabs
+chrome.tabs.onActivated.addListener(() => {
+    //displayTabInfo();
+    testArchive();
+});
 
-// // Detect when navigating or updating a webpage
-// chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-//     // Only execute when the webpage has finished loading
-//     if (changeInfo.status === "complete" && tab.active) {
-//         displayTabInfo();
-//     }
-// });
+// Detect when navigating or updating a webpage
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    // Only execute when the webpage has finished loading
+    if (changeInfo.status === "complete" && tab.active) {
+        //displayTabInfo();
+        testArchive();
+    }
+});
