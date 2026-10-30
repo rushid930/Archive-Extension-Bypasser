@@ -51,6 +51,11 @@ function savePage(url) {
 
 }
 
+// Display messages in the popup
+function setStatus(message) {
+  document.getElementById("status").textContent = message;
+}
+
 // async function testArchive() {
 //     const tab = await getCurrentTab();
 //     if (!tab) return;
@@ -80,28 +85,28 @@ function savePage(url) {
 // }
 
 // Function to display current tab information
-// async function displayTabInfo() {
-//     const tab = await getCurrentTab();
+async function displayTabInfo() {
+    const tab = await getCurrentTab();
 
-//     if (!tab) return;
+    if (!tab) return;
 
-//     console.log("Current Tab:", tab);
-//     console.log("Tab ID:", tab.id);
-//     console.log("Tab URL:", tab.url);
-//     console.log("Tab Title:", tab.title);
-// }
+    console.log("Current Tab:", tab);
+    console.log("Tab ID:", tab.id);
+    console.log("Tab URL:", tab.url);
+    console.log("Tab Title:", tab.title);
+}
 
-// // Detect when switching tabs
-// chrome.tabs.onActivated.addListener(() => {
-//     displayTabInfo();
-//     testArchive();
-// });
+// Detect when switching tabs
+chrome.tabs.onActivated.addListener(() => {
+    displayTabInfo();
+    // testArchive();
+});
 
-// // Detect when navigating or updating a webpage
-// chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-//     // Only execute when the webpage has finished loading
-//     if (changeInfo.status === "complete" && tab.active) {
-//         displayTabInfo();
-//         testArchive();
-//     }
-// });
+// Detect when navigating or updating a webpage
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    // Only execute when the webpage has finished loading
+    if (changeInfo.status === "complete" && tab.active) {
+        displayTabInfo();
+        // testArchive();
+    }
+});

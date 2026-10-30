@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page Archive Button</title>
+
+  <style>
+    body {
+      font: 14px system-ui, sans-serif;
+      width: 280px;
+      margin: 0;
+      padding: 16px;
+      color: #202124;
+    }
+
+    h1 {
+      font-size: 17px;
+      margin: 0 0 8px;
+    }
+
+    p {
+      color: #5f6368;
+      line-height: 1.4;
+      margin: 0 0 14px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 0;
+      border-radius: 7px;
+      background: #1a73e8;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      background: #e8f0fe;
+      color: #174ea6;
+    }
+
+    button:disabled {
+      opacity: .5;
+      cursor: default;
+    }
+
+    #status {
+      min-height: 18px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #5f6368;
+      overflow-wrap: anywhere;
+    }
+
+    .note {
+      font-size: 11px;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Archive this page</h1>
+
+  <p id="page">Getting current tab…</p>
+
+  <button id="save">
+    Save a snapshot to Wayback Machine
+  </button>
+
+  <button id="view" class="secondary">
+    View existing snapshots
+  </button>
+
+  <button id="copy" class="secondary">
+    Copy page URL
+  </button>
+
+  <div id="status" role="status"></div>
+
+  <p class="note">
+    This sends the page URL to the Internet Archive.
+  </p>
+
+  <script src="popup.js"></script>
+
+</body>
+</html>
