@@ -24,37 +24,45 @@ async function checkArchive(url) {
 }
 
 async function openArchivedPage(url) {
-
     const snapshot = await checkArchive(url);
 
-    if (snapshot && snapshot.available) {
-
+    if(snapshot && snapshot.available){
         chrome.tabs.create({
             url: snapshot.url
         });
-
-    } else {
-
+    }
+    else{
         console.log("No archived version found.");
-
     }
 }
 
 function savePage(url) {
-
-    const saveURL =
-        "https://web.archive.org/save/" + url;
+    const saveURL = "https://web.archive.org/save/" + url;
 
     chrome.tabs.create({
         url: saveURL
     });
-
 }
 
 // Display messages in the popup
 function setStatus(message) {
   document.getElementById("status").textContent = message;
 }
+
+// Initialize the extension
+(async () => {
+    try {
+        currentUrl = await getCurrentTab();
+        const parsed = new URL(currentUrl.url);
+        document.getElementById("page").textContent = parsed.hostname + parsed.pathname;
+    }
+    catch (err) {
+        document.getElementById("page").textContent = err.message;
+        document.querySelectorAll("button").forEach(button => {
+            button.disabled = true;
+        });
+    }
+})();
 
 // async function testArchive() {
 //     const tab = await getCurrentTab();
@@ -84,29 +92,29 @@ function setStatus(message) {
 //     }
 // }
 
-// Function to display current tab information
-async function displayTabInfo() {
-    const tab = await getCurrentTab();
+// // Function to display current tab information
+// async function displayTabInfo() {
+//     const tab = await getCurrentTab();
 
-    if (!tab) return;
+//     if (!tab) return;
 
-    console.log("Current Tab:", tab);
-    console.log("Tab ID:", tab.id);
-    console.log("Tab URL:", tab.url);
-    console.log("Tab Title:", tab.title);
-}
+//     console.log("Current Tab:", tab);
+//     console.log("Tab ID:", tab.id);
+//     console.log("Tab URL:", tab.url);
+//     console.log("Tab Title:", tab.title);
+// }
 
-// Detect when switching tabs
-chrome.tabs.onActivated.addListener(() => {
-    displayTabInfo();
-    // testArchive();
-});
+// // Detect when switching tabs
+// chrome.tabs.onActivated.addListener(() => {
+//     displayTabInfo();
+//     // testArchive();
+// });
 
-// Detect when navigating or updating a webpage
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    // Only execute when the webpage has finished loading
-    if (changeInfo.status === "complete" && tab.active) {
-        displayTabInfo();
-        // testArchive();
-    }
-});
+// // Detect when navigating or updating a webpage
+// chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+//     // Only execute when the webpage has finished loading
+//     if (changeInfo.status === "complete" && tab.active) {
+//         displayTabInfo();
+//         // testArchive();
+//     }
+// });
